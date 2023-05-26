@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Live Video Streaming</title>
+</head>
+
+<body>
+    <video id="videoElement" autoplay></video>
+
+    <script>
+        let videoElement = document.getElementById('videoElement');
+        const socket = new WebSocket('ws://localhost:8000/ws');
+
+        socket.onmessage = function (event) {
+            let frameData = event.data;
+
+            // Create an image element and set the received frame data as the source
+            let imageElement = document.createElement('img');
+            imageElement.src = 'data:image/jpeg;base64,' + frameData;
+
+            // Replace the video element with the image element
+            videoElement.replaceWith(imageElement);
+            videoElement = imageElement;  // Update the reference to the new element
+        };
+    </script>
+</body>
+
+</html>
